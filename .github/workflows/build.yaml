@@ -21,9 +21,9 @@ jobs:
       - name: Install the project
         run: uv sync --all-extras --dev
       - name: Run Ruff Linter
-        run: ruff check
+        run: .venv/bin/ruff check
       - name: Run Ruff Formatter
-        run: ruff format
+        run: .venv/bin/ruff format
       - name: Run mypy
         run: mypy .
       - name: Run tests with Pytest
