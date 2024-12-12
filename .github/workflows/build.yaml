@@ -25,7 +25,7 @@ jobs:
       - name: Run Ruff Formatter
         run: .venv/bin/ruff format
       - name: Run mypy
-        run: mypy .
+        run: .venv/bin/mypy .
       - name: Run tests with Pytest
         run: |
           pytest -v --cov=. --cov-fail-under=90
