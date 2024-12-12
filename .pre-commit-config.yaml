@@ -1,0 +1,22 @@
+repos:
+  - repo: local
+    hooks:
+      - id: ruff
+        name: "ruff-lint"
+        entry: ruff
+        args: ["check"]
+        types: [python]
+        language: python
+      - id: ruff-format
+        name: "ruff-format"
+        entry: ruff
+        args: ["format"]
+        types: [python]
+        language: python
+      - id: mypy
+        name: "type annotations check"
+        entry: mypy
+        args: ["."]
+        types: [python]
+        language: python
+        pass_filenames: false
