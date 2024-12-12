@@ -1,0 +1,51 @@
+[project]
+name = "formula1-race-analysis"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.0.1",
+    "pytest-cov>=6.0.0",
+    "pytest>=8.3.3",
+    "ruff>=0.8.1",
+    "mypy>=1.13.0",
+    "click>=8.1.7",
+    "structlog>=24.4.0",
+]
+
+[tool.pytest.ini_options]
+addopts = "-v --cov=. --cov-fail-under=90"
+testpaths = [
+    "tests",
+]
+
+[tool.coverage.run]
+omit = [
+    "tests/*",
+]
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = ["F401", "D", "S", "TRY", "T", "EM", "DTZ", "G"]
+
+[tool.ruff.format]
+indent-style = "space"
+
+[tool.mypy]
+python_version = "3.12"
+ignore_missing_imports = true
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+warn_no_return = true
+show_error_context = true
+show_column_numbers = true
+warn_unused_configs = true
