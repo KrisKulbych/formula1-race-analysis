@@ -49,3 +49,6 @@ warn_no_return = true
 show_error_context = true
 show_column_numbers = true
 warn_unused_configs = true
+
+[tool.flake8]
+ignore = ["COM812", "ISC001"]

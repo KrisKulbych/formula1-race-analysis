@@ -20,3 +20,7 @@ def logger_factory() -> None:
         wrapper_class=structlog.stdlib.BoundLogger,
         cache_logger_on_first_use=True,
     )
+
+
+logger_factory()
+logger: structlog.stdlib.BoundLogger = structlog.get_logger()

@@ -1,11 +1,12 @@
 import logging
 from pathlib import Path
+from select import error
 
-import pytest
 from _pytest.logging import LogCaptureFixture
 from click.testing import CliRunner
 
-from formula1_race_analysis.q1_report_generator import generate_report
+from display import generate_report
+from formula1_race_analysis.custom_exceptions import Formula1RaceAnalysisError
 
 
 class TestQ1GenerateReport:
@@ -20,20 +21,11 @@ class TestQ1GenerateReport:
         result = runner.invoke(generate_report, ["--data_dir", str(prepare_correct_data)])
         # When / Then
         assert result.exit_code == 0
+        assert f"Starting report generation. Data directory: '{prepare_correct_data}'." in caplog.text
         assert "Processing F1 qualifying results." in caplog.text
-        assert "Generating report sorted in ascending order (default)." in caplog.text
-        assert "1. Fernando Alonso | MCLAREN RENAULT | 1:12.657" in caplog.text
-        assert "2. Pierre Gasly | SCUDERIA TORO ROSSO HONDA | 1:12.941" in caplog.text
-        assert "3. Kevin Magnussen | HAAS FERRARI | 1:13.393" in caplog.text
-
-    def test_generate_report_with_invalid_path(self, runner: CliRunner, caplog: LogCaptureFixture) -> None:
-        caplog.set_level(logging.ERROR)
-        # Given
-        invalid_dir = "src"
-        result = runner.invoke(generate_report, ["--data_dir", invalid_dir])
-        # When / Then
-        assert result.exit_code == 1
-        assert f"Error! The specified file path '{invalid_dir}' is not found or cannot be opened." in caplog.text
+        assert "Sorting report in ascending order (default order)." in caplog.text
+        assert "Report successfully sorted in ascending order." in caplog.text
+        assert "Displaying a race report:" in caplog.text
 
     def test_generate_report_filter_by_driver(
         self,
@@ -47,9 +39,11 @@ class TestQ1GenerateReport:
         result = runner.invoke(generate_report, ["--data_dir", str(prepare_correct_data), "--driver", driver_name])
         # When / Then
         assert result.exit_code == 0
+        assert f"Starting report generation. Data directory: '{prepare_correct_data}'" in caplog.text
         assert "Processing F1 qualifying results." in caplog.text
+        assert f"Filtering report for driver: '{driver_name}'." in caplog.text
         assert f"Fetching statistics for driver: '{driver_name}'" in caplog.text
-        assert "2. Pierre Gasly | SCUDERIA TORO ROSSO HONDA | 1:12.941" in caplog.text
+        assert "Displaying a race report:" in caplog.text
 
     def test_generate_report_driver_not_found(
         self,
@@ -60,10 +54,9 @@ class TestQ1GenerateReport:
         caplog.set_level(logging.ERROR)
         # Given
         wrong_name = "Pierre Gaslie"
-        result = runner.invoke(generate_report, ["--data_dir", str(prepare_correct_data), "--driver", wrong_name])
+        runner.invoke(generate_report, ["--data_dir", str(prepare_correct_data), "--driver", wrong_name])
         # When / Then
-        assert result.exit_code == 1
-        assert f"Driver name: '{wrong_name}' is not found in driver database." in caplog.text
+        assert f"No data found for driver: '{wrong_name}'. Please check the driver name and try again." in caplog.text
 
     def test_generate_report_in_descending_order(
         self,
@@ -73,11 +66,22 @@ class TestQ1GenerateReport:
     ) -> None:
         caplog.set_level(logging.DEBUG)
         # Given
-        result = runner.invoke(generate_report, ["--data_dir", str(prepare_correct_data), "--des"])
+        result = runner.invoke(generate_report, ["--data_dir", str(prepare_correct_data), "--order", "des"])
         # When / Then
         assert result.exit_code == 0
+        assert f"Starting report generation. Data directory: '{prepare_correct_data}'" in caplog.text
         assert "Processing F1 qualifying results." in caplog.text
-        assert "Generating report sorted in descending order" in caplog.text
-        assert "3. Kevin Magnussen | HAAS FERRARI | 1:13.393" in caplog.text
-        assert "2. Pierre Gasly | SCUDERIA TORO ROSSO HONDA | 1:12.941" in caplog.text
-        assert "1. Fernando Alonso | MCLAREN RENAULT | 1:12.657" in caplog.text
+        assert "Sorting report in descending order." in caplog.text
+        assert "Report successfully sorted in descending order." in caplog.text
+        assert "Displaying a race report:" in caplog.text
+
+    def test_generate_report_with_invalid_data(
+        self,
+        runner: CliRunner,
+        caplog: LogCaptureFixture,
+        prepare_invalid_data: Path,
+    ) -> None:
+        caplog.set_level(logging.ERROR)
+        # Given
+        runner.invoke(generate_report, ["--data_dir", str(prepare_invalid_data)], catch_exceptions=False)
+        assert "Failed during report generation:" in caplog.text

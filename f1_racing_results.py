@@ -1,4 +1,15 @@
-from formula1_race_analysis import generate_report
+import click
+
+from display import generate_report
+
+
+@click.group()
+def f1_racing_results() -> None:
+    pass
+
+
+f1_racing_results.add_command(generate_report)
+
 
 if __name__ == "__main__":
-    generate_report()
+    f1_racing_results()

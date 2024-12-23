@@ -21,13 +21,13 @@ jobs:
       - name: Install the project
         run: uv sync --all-extras --dev
       - name: Run Ruff Linter
-        run: .venv/bin/ruff check
+        run: uv run ruff check
       - name: Run Ruff Formatter
-        run: .venv/bin/ruff format
+        run: uv run ruff format
       - name: Run mypy
-        run: .venv/bin/mypy .
+        run: uv run mypy .
       - name: Run tests with Pytest
         run: |
-          .venv/bin/pytest -v --cov=. --cov-fail-under=90
+          uv run pytest -v --cov=. --cov-fail-under=90
       - name: Comment coverage
         uses: coroo/pytest-coverage-commentator@v1.0.2

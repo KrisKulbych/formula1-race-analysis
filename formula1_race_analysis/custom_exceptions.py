@@ -1,22 +1,22 @@
-class CustomFileNotFoundError(Exception):
+class Formula1RaceAnalysisError(Exception):
+    """
+    Base class for all exceptions in Formula1-race-analysis-app.
+    """
+
+
+class MissedFileError(Formula1RaceAnalysisError):
     """
     Raised when the file is not found or cannot be opened.
     """
 
 
-class CustomInvalidFormatDataError(Exception):
+class InvalidFormatDataError(Formula1RaceAnalysisError):
     """
     Raised when data in file has incorrect format.
     """
 
 
-class CustomInvalidRaceTimeError(Exception):
+class InvalidRaceTimeError(Formula1RaceAnalysisError):
     """
     Raised when the driver race start time is greater than the race end time.
-    """
-
-
-class CustomMissedTimestampError(Exception):
-    """
-    Raised when the race start or the race end time isn't provided.
     """
