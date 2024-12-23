@@ -16,7 +16,7 @@ repos:
       - id: mypy
         name: "type annotations check"
         entry: mypy
-        args: ["."]
+        args: [".", "--cache-dir=.mypy_cache", "--no-incremental"]
         types: [python]
         language: python
         pass_filenames: false
