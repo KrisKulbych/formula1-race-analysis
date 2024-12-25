@@ -89,8 +89,8 @@ wheels = [
 
 [[package]]
 name = "formula1-race-analysis"
-version = "0.1.0"
-source = { virtual = "." }
+version = "0.0.1"
+source = { editable = "." }
 
 [package.dev-dependencies]
 dev = [
@@ -104,6 +104,7 @@ dev = [
 ]
 
 [package.metadata]
+requires-dist = [{ name = "formula1-race-analysis" }]
 
 [package.metadata.requires-dev]
 dev = [

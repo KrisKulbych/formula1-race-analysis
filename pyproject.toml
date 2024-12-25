@@ -3,8 +3,9 @@ name = "formula1-race-analysis"
 version = "0.0.1"
 description = "Add your description here"
 readme = "README.md"
+authors = [{name = "KrisKulbych", email = "k.kulbych@gmail.com"}]
 requires-python = ">=3.12"
-dependencies = []
+dependencies = ["formula1_race_analysis",]
 
 [dependency-groups]
 dev = [
@@ -16,6 +17,9 @@ dev = [
     "click>=8.1.7",
     "structlog>=24.4.0",
 ]
+
+[tool.uv.workspace]
+exclude = ["src/tests/*"]
 
 [tool.pytest.ini_options]
 addopts = "-v --cov=. --cov-fail-under=90"
@@ -52,3 +56,16 @@ warn_unused_configs = true
 
 [tool.flake8]
 ignore = ["COM812", "ISC001"]
+
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.exclude-package-data]
+"tests" = ["*"]

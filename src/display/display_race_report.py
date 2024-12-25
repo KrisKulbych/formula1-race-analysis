@@ -1,8 +1,7 @@
 from datetime import timedelta
 from enum import Enum
-from pathlib import Path
 
-from formula1_race_analysis import Driver, build_q1_report, format_lap_time
+from formula1_race_analysis import Driver, format_lap_time
 
 THE_NUMBER_OF_FASTEST_DRIVERS_PASSED_Q1 = 15
 

@@ -1,12 +1,10 @@
 import logging
 from pathlib import Path
-from select import error
 
 from _pytest.logging import LogCaptureFixture
 from click.testing import CliRunner
 
 from display import generate_report
-from formula1_race_analysis.custom_exceptions import Formula1RaceAnalysisError
 
 
 class TestQ1GenerateReport:

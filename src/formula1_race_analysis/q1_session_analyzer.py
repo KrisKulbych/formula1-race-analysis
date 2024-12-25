@@ -2,12 +2,10 @@ from datetime import datetime, timedelta
 from pathlib import Path
 
 from config import FilePaths
-from formula1_race_analysis.custom_exceptions import (
+from formula1_race_analysis import (
     InvalidFormatDataError,
     InvalidRaceTimeError,
     MissedFileError,
-)
-from formula1_race_analysis.data_formatter import (
     convert_timestamp_to_seconds,
     format_data_from_abbreviation_file,
     format_data_from_log_file,
