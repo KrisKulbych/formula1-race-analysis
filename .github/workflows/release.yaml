@@ -1,6 +1,7 @@
 name: formula1-race-analysis-publish-to-TestPyPI
 on:
-  workflow_dispatch:
+  release:
+    types: [published]
 
 jobs:
   build_and_release:
