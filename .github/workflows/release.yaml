@@ -25,9 +25,7 @@ jobs:
           source .venv/bin/activate
       - name: Install the project
         run: uv sync --all-extras --dev --index-strategy unsafe-best-match
-      - name: Build the package
+      - name: Build the package and upload to TestPyPi
         run: |
           uv build --index-strategy unsafe-best-match
-      - name: Upload package to Test PyPI
-        run: |
           uv publish --index testpypi -t ${{ secrets.TESTPYPI_TOKEN }}
