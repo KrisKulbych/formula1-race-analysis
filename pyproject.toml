@@ -1,6 +1,6 @@
 [project]
 name = "formula1-race-analysis"
-version = "0.0.1"
+version = "0.0.2"
 description = "Add your description here"
 readme = "README.md"
 authors = [{name = "KrisKulbych", email = "k.kulbych@gmail.com"}]

@@ -28,4 +28,4 @@ jobs:
       - name: Build the package and upload to TestPyPi
         run: |
           uv build --index-strategy unsafe-best-match
-          uv publish --index testpypi -t ${{ secrets.TESTPYPI_TOKEN }}
+          uv publish --publish-url https://test.pypi.org/legacy/ -t ${{ secrets.TESTPYPI_TOKEN }}
