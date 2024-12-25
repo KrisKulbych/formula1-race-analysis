@@ -24,10 +24,10 @@ jobs:
           python -m venv .venv
           source .venv/bin/activate
       - name: Install the project
-        run: uv sync --all-extras --dev
+        run: uv sync --all-extras --dev --index-strategy unsafe-best-match
       - name: Build the package
         run: |
-          uv build
+          uv build --index-strategy unsafe-best-match
       - name: Upload package to Test PyPI
         run: |
-          uv publish --index testpypi -t ${{ secrets.TESTPYPI_TOKEN }}
+          uv publish --index testpypi -t ${{ secrets.TESTPYPI_TOKEN }} --index-strategy unsafe-best-match
