@@ -30,4 +30,4 @@ jobs:
           uv build --index-strategy unsafe-best-match
       - name: Upload package to Test PyPI
         run: |
-          uv publish --index testpypi -t ${{ secrets.TESTPYPI_TOKEN }}
+          uv publish --index <name> -t ${{ secrets.TESTPYPI_TOKEN }}
