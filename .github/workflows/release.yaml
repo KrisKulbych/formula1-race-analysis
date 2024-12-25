@@ -1,7 +1,6 @@
 name: formula1-race-analysis-publish-to-TestPyPI
 on:
-  release:
-    types: [ published ]
+  workflow_dispatch:
 
 jobs:
   build_and_release:
@@ -30,4 +29,4 @@ jobs:
           uv build --index-strategy unsafe-best-match
       - name: Upload package to Test PyPI
         run: |
-          uv publish --index <name> -t ${{ secrets.TESTPYPI_TOKEN }}
+          uv publish --index testpypi -t ${{ secrets.TESTPYPI_TOKEN }}
