@@ -64,7 +64,7 @@ class TestQ1GenerateReport:
     ) -> None:
         caplog.set_level(logging.DEBUG)
         # Given
-        result = runner.invoke(generate_report, ["--data_dir", str(prepare_correct_data), "--order", "des"])
+        result = runner.invoke(generate_report, ["--data_dir", str(prepare_correct_data), "--order", "desc"])
         # When / Then
         assert result.exit_code == 0
         assert f"Starting report generation. Data directory: '{prepare_correct_data}'" in caplog.text

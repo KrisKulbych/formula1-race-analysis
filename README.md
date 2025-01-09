@@ -25,7 +25,7 @@ Formula 1 Race Analysis supports Python >= 3.12.
 ## Interface
 The primary command to use is generate_report. It takes the following options:
 ```console
-generate_report --data_dir <PATH_TO_DATA> [--order asc|des] [--driver DRIVER_NAME]
+f1_racing_results generate_report --data_dir <PATH_TO_DATA> [--order asc|des] [--driver DRIVER_NAME]
 ```
 
 Options:
@@ -40,15 +40,15 @@ Options:
 
 Generate a report in ascending order:
 ```console
-generate_report --data_dir src/data
+f1_racing_results generate_report --data_dir src/data
 ```
 Generate a report in descending order:
 ```console
-generate_report --data_dir src/data --order des
+f1_racing_results generate_report --data_dir src/data --order des
 ```
 Filter the report for a specific driver:
 ```console
-generate_report --data_dir src/data --driver "Lewis Hamilton"
+f1_racing_results generate_report --data_dir src/data --driver "Lewis Hamilton"
 ```
 
 ## Logging

@@ -13,10 +13,10 @@ from .display_race_report import SortStrategy, display_race_report, filter_repor
 @click.option("--data_dir", type=click.Path(exists=True, dir_okay=True, path_type=Path), required=True)
 @click.option(
     "--order",
-    type=click.Choice(["asc", "des"], case_sensitive=False),
+    type=click.Choice(["asc", "desc"], case_sensitive=False),
     default="asc",
     show_default=True,
-    help="['asc'] = To sort results in ascending order, ['des'] = To sort results in descending order",
+    help="['asc'] = To sort results in ascending order, ['desc'] = To sort results in descending order",
 )
 @click.option("--driver", default=str)
 def generate_report(data_dir: Path, order: str, driver: str) -> None:
@@ -37,12 +37,12 @@ def generate_report(data_dir: Path, order: str, driver: str) -> None:
             logger.error(f"No data found for driver: '{driver}'. Please check the driver name and try again.")
             click.get_current_context().exit(1)
 
-    elif order == SortStrategy.DESCENDING_ORDER.value:
+    elif order == SortStrategy.DESCENDING_ORDER:
         logger.debug("Sorting report in descending order.")
         sorted_report = sort_report(database, SortStrategy.DESCENDING_ORDER)
         logger.debug("Report successfully sorted in descending order.")
 
-    elif order == SortStrategy.ASCENDING_ORDER.value:
+    elif order == SortStrategy.ASCENDING_ORDER:
         logger.debug("Sorting report in ascending order (default order).")
         sorted_report = sort_report(database, SortStrategy.ASCENDING_ORDER)
         logger.info("Report successfully sorted in ascending order.")

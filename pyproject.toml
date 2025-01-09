@@ -1,22 +1,28 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "formula1-race-analysis"
-version = "0.0.2"
+version = "0.0.3"
 description = "Add your description here"
 readme = "README.md"
 authors = [{name = "KrisKulbych", email = "k.kulbych@gmail.com"}]
 requires-python = ">=3.12"
-dependencies = ["formula1_race_analysis",]
+dependencies = [
+    "click>=8.1.7",
+    "structlog>=24.4.0",
+]
 
-[dependency-groups]
-dev = [
+[tool.uv]
+dev-dependencies = [
     "pre-commit>=4.0.1",
     "pytest-cov>=6.0.0",
     "pytest>=8.3.3",
     "ruff>=0.8.1",
     "mypy>=1.13.0",
-    "click>=8.1.7",
-    "structlog>=24.4.0",
 ]
+index-strategy = "unsafe-best-match"
 
 [tool.uv.workspace]
 exclude = ["src/tests/*"]
@@ -57,12 +63,9 @@ warn_unused_configs = true
 [tool.flake8]
 ignore = ["COM812", "ISC001"]
 
-[build-system]
-requires = ["setuptools>=61", "wheel"]
-build-backend = "setuptools.build_meta"
-
 [tool.setuptools]
 include-package-data = true
+#package-data = {".": ["f1_racing_results.py"]}
 
 [tool.setuptools.packages.find]
 where = ["src"]
@@ -74,3 +77,6 @@ where = ["src"]
 name = "testpypi"
 url = "https://test.pypi.org/simple/"
 publish-url = "https://test.pypi.org/legacy/"
+
+[project.scripts]
+f1_racing_results = "f1_racing_results:f1_racing_results"

@@ -22,9 +22,9 @@ def build_q1_report(base_dir: Path) -> list[tuple[Driver, timedelta]]:
     Raises InvalidFormatDataError if the driver database could not be created due to invalid
     file format.
     """
-    abbreviations_file = base_dir / FilePaths.ABBREVIATIONS.value
-    start_log_file = base_dir / FilePaths.START_LOG.value
-    end_log_file = base_dir / FilePaths.END_LOG.value
+    abbreviations_file = base_dir / FilePaths.ABBREVIATIONS
+    start_log_file = base_dir / FilePaths.START_LOG
+    end_log_file = base_dir / FilePaths.END_LOG
 
     driver_database = parse_abbreviation_file(abbreviations_file)
     if not driver_database:

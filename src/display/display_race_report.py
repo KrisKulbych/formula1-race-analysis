@@ -1,14 +1,14 @@
 from datetime import timedelta
-from enum import Enum
+from enum import StrEnum
 
 from formula1_race_analysis import Driver, format_lap_time
 
 THE_NUMBER_OF_FASTEST_DRIVERS_PASSED_Q1 = 15
 
 
-class SortStrategy(Enum):
+class SortStrategy(StrEnum):
     ASCENDING_ORDER = "asc"
-    DESCENDING_ORDER = "des"
+    DESCENDING_ORDER = "desc"
 
 
 def display_race_report(report: list[tuple[Driver, timedelta]]) -> None:
