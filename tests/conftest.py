@@ -1,8 +1,9 @@
 from pathlib import Path
 
 import pytest
-from config import FilePaths
 from click.testing import CliRunner
+
+from config import FilePaths
 
 
 @pytest.fixture(scope="session")
