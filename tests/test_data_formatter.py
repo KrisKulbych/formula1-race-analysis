@@ -11,7 +11,7 @@ class TestDataFormatter:
         timestamp = {"SVF": "2018-05-24_12:14:12.054"}
         expected_result = {"SVF": datetime(2018, 5, 24, 12, 14, 12, 54000)}
         # When
-        actual_result = convert_timestamp_to_seconds(timestamp)
+        actual_result = convert_timestamp_to_seconds(timestamp, ignore_errors=False)
         # Then
         assert actual_result == expected_result
 
@@ -24,4 +24,4 @@ class TestDataFormatter:
             InvalidFormatDataError,
             match=f"The timestamp format: '{timestamp}' is incorrect. Expected format: YYYY-MM-DD_HH:MM:SS.sss",
         ):
-            convert_timestamp_to_seconds(invalid_timestamp)
+            convert_timestamp_to_seconds(invalid_timestamp, ignore_errors=False)

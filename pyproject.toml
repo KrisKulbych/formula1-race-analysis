@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "formula1-race-analysis"
-version = "0.0.3"
+version = "0.0.4"
 description = "Add your description here"
 readme = "README.md"
 authors = [{name = "KrisKulbych", email = "k.kulbych@gmail.com"}]
@@ -14,14 +14,15 @@ dependencies = [
     "structlog>=24.4.0",
 ]
 
-[tool.uv]
-dev-dependencies = [
-    "pre-commit>=4.0.1",
+[dependency-groups]
+dev = [
     "pytest-cov>=6.0.0",
     "pytest>=8.3.3",
     "ruff>=0.8.1",
     "mypy>=1.13.0",
 ]
+
+[tool.uv]
 index-strategy = "unsafe-best-match"
 
 [tool.uv.workspace]
@@ -43,7 +44,7 @@ line-length = 120
 
 [tool.ruff.lint]
 select = ["ALL"]
-ignore = ["F401", "D", "S", "TRY", "T", "EM", "DTZ", "G"]
+ignore = ["F401", "COM812", "ISC001", "D", "S", "TRY", "T", "EM", "DTZ", "G"]
 
 [tool.ruff.format]
 indent-style = "space"
@@ -65,7 +66,7 @@ ignore = ["COM812", "ISC001"]
 
 [tool.setuptools]
 include-package-data = true
-#package-data = {".": ["f1_racing_results.py"]}
+py-modules = ["f1_racing_results"]
 
 [tool.setuptools.packages.find]
 where = ["src"]

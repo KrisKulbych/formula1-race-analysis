@@ -19,10 +19,11 @@ from .display_race_report import SortStrategy, display_race_report, filter_repor
     help="['asc'] = To sort results in ascending order, ['desc'] = To sort results in descending order",
 )
 @click.option("--driver", default=str)
-def generate_report(data_dir: Path, order: str, driver: str) -> None:
+@click.option("--ignore_errors", is_flag=True, default=False)
+def generate_report(data_dir: Path, order: str, driver: str, ignore_errors: bool | None) -> None:
     try:
         logger.debug(f"Starting report generation. Data directory: '{data_dir}'.")
-        database = build_q1_report(Path(data_dir))
+        database = build_q1_report(Path(data_dir), ignore_errors)
     except Formula1RaceAnalysisError as error:
         logger.error(f"Failed during report generation: {type(error).__name__} - {error}")
         click.get_current_context().exit(1)

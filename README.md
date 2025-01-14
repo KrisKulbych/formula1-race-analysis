@@ -25,7 +25,7 @@ Formula 1 Race Analysis supports Python >= 3.12.
 ## Interface
 The primary command to use is generate_report. It takes the following options:
 ```console
-f1_racing_results generate_report --data_dir <PATH_TO_DATA> [--order asc|des] [--driver DRIVER_NAME]
+f1_racing_results generate-report --data_dir <PATH_TO_DATA> [--order asc|des] [--driver DRIVER_NAME]
 ```
 
 Options:
@@ -38,17 +38,27 @@ Options:
 
 `--driver` (Optional): Filter the report by the driver's name.
 
+`--ignore_errors` (Optional): Skip lines with incorrect data format.
+
 Generate a report in ascending order:
 ```console
-f1_racing_results generate_report --data_dir src/data
+f1_racing_results generate-report --data_dir <PATH_TO_DATA>
+```
+Generate a report in ascending order:
+```console
+f1_racing_results generate-report --data_dir <PATH_TO_DATA>
 ```
 Generate a report in descending order:
 ```console
-f1_racing_results generate_report --data_dir src/data --order des
+f1_racing_results generate-report --data_dir <PATH_TO_DATA> --order des
+```
+Skip lines with incorrect data format:
+```console
+f1_racing_results generate-report --data_dir <PATH_TO_DATA> --ignore_errors
 ```
 Filter the report for a specific driver:
 ```console
-f1_racing_results generate_report --data_dir src/data --driver "Lewis Hamilton"
+f1_racing_results generate-report --data_dir <PATH_TO_DATA> --driver "Lewis Hamilton"
 ```
 
 ## Logging
@@ -74,7 +84,7 @@ powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | ie
 2. Activate virtual environment
 ```console
 python -m venv .venv
-source .venv/bin/activate
+.venv/bin/activate
 ```
 3. Install Development Dependencies:
 ```console
