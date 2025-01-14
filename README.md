@@ -86,23 +86,18 @@ powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | ie
 python -m venv .venv
 .venv/bin/activate
 ```
-3. Install Development Dependencies:
+3. Lint and formate code:
 ```console
-uv sync --all-extras --dev
+uvx ruff check
+uvx ruff format
 ```
-4. Lint and formate code:
+4. Automatically format code, check linting, and ensure clean commits.
 ```console
-uv run ruff check
-uv run ruff format
-uv run mypy .
+uvx pre-commit run 
 ```
-5. Automatically format code, check linting, and ensure clean commits.
+5. Run tests
 ```console
-pre-commit run 
-```
-6. Run tests
-```console
-pytest tests\
+uvx pytest tests\
 ```
 
 tags: `python` `python3` `problem-solving` `programming` `learn-python` `formula1_race_analysis` `uv` `cli` `testpypi`
