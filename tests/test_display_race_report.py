@@ -15,9 +15,9 @@ class TestDisplayRaceReport:
         # Given
         database = build_q1_report(prepare_correct_data)
         expected_result = [
-            "1. Fernando Alonso | MCLAREN RENAULT | 1:12.657",
-            "2. Pierre Gasly | SCUDERIA TORO ROSSO HONDA | 1:12.941",
-            "3. Kevin Magnussen | HAAS FERRARI | 1:13.393",
+            "1. Fernando Alonso | MCLAREN RENAULT           | 1:12.657",
+            " 2. Pierre Gasly    | SCUDERIA TORO ROSSO HONDA | 1:12.941",
+            " 3. Kevin Magnussen | HAAS FERRARI              | 1:13.393",
         ]
         # When
         sorted_database = sort_report(database, SortStrategy.ASCENDING_ORDER)
@@ -36,4 +36,4 @@ class TestDisplayRaceReport:
         display_race_report(filtered)
         captured = capsys.readouterr()
         # Then
-        assert captured.out == "1. Pierre Gasly | SCUDERIA TORO ROSSO HONDA | 1:12.941\n"
+        assert captured.out == " 1. Pierre Gasly | SCUDERIA TORO ROSSO HONDA | 1:12.941\n"

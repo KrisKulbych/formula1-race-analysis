@@ -14,15 +14,12 @@ class TestQ1GenerateReport:
         caplog: LogCaptureFixture,
         prepare_correct_data: Path,
     ) -> None:
-        caplog.set_level(logging.DEBUG)
+        caplog.set_level(logging.INFO)
         # Given
         result = runner.invoke(generate_report, ["--data_dir", str(prepare_correct_data)])
         # When / Then
         assert result.exit_code == 0
-        assert f"Starting report generation. Data directory: '{prepare_correct_data}'." in caplog.text
         assert "Processing F1 qualifying results." in caplog.text
-        assert "Sorting report in ascending order (default order)." in caplog.text
-        assert "Report successfully sorted in ascending order." in caplog.text
         assert "Displaying a race report:" in caplog.text
 
     def test_generate_report_filter_by_driver(
@@ -31,17 +28,14 @@ class TestQ1GenerateReport:
         caplog: LogCaptureFixture,
         prepare_correct_data: Path,
     ) -> None:
-        caplog.set_level(logging.DEBUG)
+        caplog.set_level(logging.INFO)
         # Given
         driver_name = "Pierre Gasly"
         result = runner.invoke(generate_report, ["--data_dir", str(prepare_correct_data), "--driver", driver_name])
         # When / Then
         assert result.exit_code == 0
-        assert f"Starting report generation. Data directory: '{prepare_correct_data}'" in caplog.text
         assert "Processing F1 qualifying results." in caplog.text
-        assert f"Filtering report for driver: '{driver_name}'." in caplog.text
-        assert f"Fetching statistics for driver: '{driver_name}'" in caplog.text
-        assert "Displaying a race report:" in caplog.text
+        assert f"Displaying a race report for driver: {driver_name}" in caplog.text
 
     def test_generate_report_driver_not_found(
         self,

@@ -44,10 +44,6 @@ Generate a report in ascending order:
 ```console
 f1_racing_results generate-report --data_dir <PATH_TO_DATA>
 ```
-Generate a report in ascending order:
-```console
-f1_racing_results generate-report --data_dir <PATH_TO_DATA>
-```
 Generate a report in descending order:
 ```console
 f1_racing_results generate-report --data_dir <PATH_TO_DATA> --order des

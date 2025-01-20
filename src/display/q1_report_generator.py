@@ -25,28 +25,28 @@ def generate_report(data_dir: Path, order: str, driver: str, ignore_errors: bool
         logger.debug(f"Starting report generation. Data directory: '{data_dir}'.")
         database = build_q1_report(Path(data_dir), ignore_errors)
     except Formula1RaceAnalysisError as error:
-        logger.error(f"Failed during report generation: {type(error).__name__} - {error}")
+        logger.error(f"Failed during report generation: {error}")
         click.get_current_context().exit(1)
 
-    sorted_report = []
     logger.info("Processing F1 qualifying results.")
+
     if driver:
         logger.debug(f"Filtering report for driver: '{driver}'.")
-        sorted_report = filter_report(database, driver)
+        filtered_report = filter_report(database, driver)
         logger.debug(f"Fetching statistics for driver: '{driver}'.")
-        if not sorted_report:
+
+        if not filtered_report:
             logger.error(f"No data found for driver: '{driver}'. Please check the driver name and try again.")
             click.get_current_context().exit(1)
 
-    elif order == SortStrategy.DESCENDING_ORDER:
-        logger.debug("Sorting report in descending order.")
-        sorted_report = sort_report(database, SortStrategy.DESCENDING_ORDER)
-        logger.debug("Report successfully sorted in descending order.")
+        logger.info(f"Displaying a race report for driver: {driver}")
+        display_race_report(filtered_report)
 
-    elif order == SortStrategy.ASCENDING_ORDER:
-        logger.debug("Sorting report in ascending order (default order).")
-        sorted_report = sort_report(database, SortStrategy.ASCENDING_ORDER)
-        logger.info("Report successfully sorted in ascending order.")
+    else:
+        order_strategy = SortStrategy.DESCENDING_ORDER if order.lower() == "desc" else SortStrategy.ASCENDING_ORDER
+        logger.debug(f"Sorting report in {order_strategy}ending order.")
+        sorted_report = sort_report(database, order_strategy)
+        logger.debug(f"Report successfully sorted in {order_strategy}ending order.")
 
-    logger.info("Displaying a race report:")
-    display_race_report(sorted_report)
+        logger.info("Displaying a race report:")
+        display_race_report(sorted_report)

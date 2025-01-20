@@ -4,8 +4,8 @@ import sys
 import structlog
 
 
-def logger_factory() -> None:
-    logging.basicConfig(format="%(message)s", stream=sys.stdout, level=logging.DEBUG)
+def logger_factory() -> structlog.stdlib.BoundLogger:
+    logging.basicConfig(format="%(message)s", stream=sys.stdout, level=logging.INFO)
 
     structlog.configure(
         processors=[
@@ -20,7 +20,7 @@ def logger_factory() -> None:
         wrapper_class=structlog.stdlib.BoundLogger,
         cache_logger_on_first_use=True,
     )
+    return structlog.get_logger()
 
 
-logger_factory()
-logger: structlog.stdlib.BoundLogger = structlog.get_logger()
+logger = logger_factory()

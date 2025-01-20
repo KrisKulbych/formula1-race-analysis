@@ -66,3 +66,10 @@ def format_lap_time(delta: timedelta) -> str:
     """
     _, minutes, seconds = str(delta).split(":")
     return f"{int(minutes)}:{float(seconds):06.3f}"
+
+
+def format_driver_name(driver: str) -> str:
+    name, last_name = driver.strip().lower().split(" ")
+    formatted_name = name[0].upper() + name[1:]
+    formatted_last_name = last_name[0].upper() + last_name[1:]
+    return f"{formatted_name} {formatted_last_name}"
