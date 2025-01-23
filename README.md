@@ -46,7 +46,7 @@ f1_racing_results generate-report --data_dir <PATH_TO_DATA>
 ```
 Generate a report in descending order:
 ```console
-f1_racing_results generate-report --data_dir <PATH_TO_DATA> --order des
+f1_racing_results generate-report --data_dir <PATH_TO_DATA> --order desc
 ```
 Skip lines with incorrect data format:
 ```console
@@ -54,7 +54,7 @@ f1_racing_results generate-report --data_dir <PATH_TO_DATA> --ignore_errors
 ```
 Filter the report for a specific driver:
 ```console
-f1_racing_results generate-report --data_dir <PATH_TO_DATA> --driver "Lewis Hamilton"
+f1_racing_results generate-report --data_dir <PATH_TO_DATA> --driver "Valtteri Bottas"
 ```
 
 ## Logging

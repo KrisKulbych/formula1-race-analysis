@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "formula1-race-analysis"
-version = "0.0.5"
+version = "0.0.6"
 description = "Add your description here"
 readme = "README.md"
 authors = [{name = "KrisKulbych", email = "k.kulbych@gmail.com"}]
@@ -26,7 +26,7 @@ dev = [
 index-strategy = "unsafe-best-match"
 
 [tool.uv.workspace]
-exclude = ["src/tests/*"]
+exclude = ["tests/*"]
 
 [tool.pytest.ini_options]
 addopts = "-v --cov=. --cov-fail-under=90"

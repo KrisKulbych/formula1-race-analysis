@@ -70,6 +70,6 @@ class TestQ1SessionAnalyser:
         # When / Then
         with pytest.raises(
             InvalidRaceTimeError,
-            match=(f"Race time error for driver: '{driver_id}'. Start time is greater than end time."),
+            match=f"Race time error for driver: '{driver_id}'. Start time is greater than end time.",
         ):
             calculate_lap_time(start_timestamp, end_timestamp, ignore_errors=False)

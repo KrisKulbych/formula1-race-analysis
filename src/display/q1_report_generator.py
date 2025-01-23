@@ -32,21 +32,20 @@ def generate_report(data_dir: Path, order: str, driver: str, ignore_errors: bool
 
     if driver:
         logger.debug(f"Filtering report for driver: '{driver}'.")
-        filtered_report = filter_report(database, driver)
+        target_data = filter_report(database, driver)
         logger.debug(f"Fetching statistics for driver: '{driver}'.")
 
-        if not filtered_report:
+        if not target_data:
             logger.error(f"No data found for driver: '{driver}'. Please check the driver name and try again.")
             click.get_current_context().exit(1)
 
         logger.info(f"Displaying a race report for driver: {driver}")
-        display_race_report(filtered_report)
 
     else:
         order_strategy = SortStrategy.DESCENDING_ORDER if order.lower() == "desc" else SortStrategy.ASCENDING_ORDER
         logger.debug(f"Sorting report in {order_strategy}ending order.")
-        sorted_report = sort_report(database, order_strategy)
+        target_data = sort_report(database, order_strategy)
         logger.debug(f"Report successfully sorted in {order_strategy}ending order.")
 
         logger.info("Displaying a race report:")
-        display_race_report(sorted_report)
+    display_race_report(target_data)
