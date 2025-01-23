@@ -1,0 +1,86 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "formula1-race-analysis"
+version = "1.0.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [{name = "KrisKulbych", email = "k.kulbych@gmail.com"}]
+requires-python = ">=3.12"
+dependencies = [
+    "click>=8.1.7",
+    "structlog>=24.4.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest-cov>=6.0.0",
+    "pytest>=8.3.3",
+    "ruff>=0.8.1",
+    "mypy>=1.13.0",
+]
+
+[tool.uv]
+index-strategy = "unsafe-best-match"
+
+[tool.uv.workspace]
+exclude = ["tests/*"]
+
+[tool.pytest.ini_options]
+addopts = "-v --cov=. --cov-fail-under=90"
+testpaths = [
+    "tests",
+]
+
+[tool.coverage.run]
+omit = [
+    "tests/*",
+]
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = ["F401", "COM812", "ISC001", "D", "S", "TRY", "T", "EM", "DTZ", "G"]
+
+[tool.ruff.format]
+indent-style = "space"
+
+[tool.mypy]
+python_version = "3.12"
+ignore_missing_imports = true
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+warn_no_return = true
+show_error_context = true
+show_column_numbers = true
+warn_unused_configs = true
+
+[tool.flake8]
+ignore = ["COM812", "ISC001"]
+
+[tool.setuptools]
+include-package-data = true
+py-modules = ["f1_racing_results"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.exclude-package-data]
+"tests" = ["*"]
+
+[[tool.uv.index]]
+url = "https://test.pypi.org/simple/"
+publish-url = "https://test.pypi.org/legacy/"
+default = true
+
+[[tool.uv.index]]
+url = "https://pypi.org/simple/"
+
+[project.scripts]
+f1_racing_results = "f1_racing_results:f1_racing_results"

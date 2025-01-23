@@ -1,0 +1,31 @@
+name: formula1-race-analysis-publish-to-TestPyPI
+on:
+  release:
+    types: [published]
+
+jobs:
+  build_and_release:
+    runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: ".python-version"
+      - name: Activate virtual environment
+        run: |
+          python -m venv .venv
+          source .venv/bin/activate
+      - name: Install the project
+        run: uv sync --all-extras --dev --index-strategy unsafe-best-match
+      - name: Build the package and upload to TestPyPi
+        run: |
+          uv build --index-strategy unsafe-best-match
+          uv publish --publish-url https://test.pypi.org/legacy/ -t ${{ secrets.TESTPYPI_TOKEN }}
