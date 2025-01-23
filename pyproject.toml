@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "formula1-race-analysis"
-version = "0.0.6"
+version = "1.0.0"
 description = "Add your description here"
 readme = "README.md"
 authors = [{name = "KrisKulbych", email = "k.kulbych@gmail.com"}]
