@@ -22,11 +22,11 @@ class TestQ1SessionAnalyser:
         # Given
         tmp_abbreviations_file = prepare_correct_data / "abbreviations.txt"
         # When
-        expected_driver_list = create_driver_list(tmp_abbreviations_file, ignore_errors=False)
+        driver_list = create_driver_list(tmp_abbreviations_file, ignore_errors=False)
         # Then
-        assert expected_driver_list[0] == Driver(id="PGS", name="Pierre Gasly", car_model="SCUDERIA TORO ROSSO HONDA")
-        assert expected_driver_list[1] == Driver(id="KMH", name="Kevin Magnussen", car_model="HAAS FERRARI")
-        assert expected_driver_list[2] == Driver(id="FAM", name="Fernando Alonso", car_model="MCLAREN RENAULT")
+        assert driver_list[0] == Driver(identifier="PGS", name="Pierre Gasly", car_model="SCUDERIA TORO ROSSO HONDA")
+        assert driver_list[1] == Driver(identifier="KMH", name="Kevin Magnussen", car_model="HAAS FERRARI")
+        assert driver_list[2] == Driver(identifier="FAM", name="Fernando Alonso", car_model="MCLAREN RENAULT")
 
     def test_create_driver_list_with_invalid_data(self, prepare_invalid_data: Path) -> None:
         # Given
@@ -40,9 +40,9 @@ class TestQ1SessionAnalyser:
         # Given
         tmp_start_log = prepare_correct_data / "start.log"
         expected_result = {
-            "FAM": {"id": "FAM", "timestamp": datetime(2018, 5, 24, 12, 13, 4, 512000)},
-            "KMH": {"id": "KMH", "timestamp": datetime(2018, 5, 24, 12, 2, 51, 3000)},
-            "PGS": {"id": "PGS", "timestamp": datetime(2018, 5, 24, 12, 7, 23, 645000)},
+            "FAM": {"identifier": "FAM", "timestamp": datetime(2018, 5, 24, 12, 13, 4, 512000)},
+            "KMH": {"identifier": "KMH", "timestamp": datetime(2018, 5, 24, 12, 2, 51, 3000)},
+            "PGS": {"identifier": "PGS", "timestamp": datetime(2018, 5, 24, 12, 7, 23, 645000)},
         }
         # When
         actual_result = parse_log_file(tmp_start_log, ignore_errors=False)
@@ -69,8 +69,8 @@ class TestQ1SessionAnalyser:
 
     def test_calculate_lap_time_with_raises_custom_invalid_race_time_error(self) -> None:
         # Given
-        start_timestamp = {"NHR": {"id": "NHR", "timestamp": datetime(2018, 5, 24, 12, 14, 12, 54000)}}
-        end_timestamp = {"NHR": {"id": "NHR", "timestamp": datetime(2018, 5, 24, 12, 11, 24, 67000)}}
+        start_timestamp = {"NHR": {"identifier": "NHR", "timestamp": datetime(2018, 5, 24, 12, 14, 12, 54000)}}
+        end_timestamp = {"NHR": {"identifier": "NHR", "timestamp": datetime(2018, 5, 24, 12, 11, 24, 67000)}}
         driver_id = next(iter(start_timestamp.keys()))
         # When / Then
         with pytest.raises(

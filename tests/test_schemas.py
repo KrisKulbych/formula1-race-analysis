@@ -12,7 +12,7 @@ class TestAbbreviationEntry:
         # When
         parsed_entry = AbbreviationEntry.model_validate(given_entry)
         # Then
-        assert parsed_entry.id == "PGS"
+        assert parsed_entry.identifier == "PGS"
         assert parsed_entry.name == "Pierre Gasly"
         assert parsed_entry.car_model == "SCUDERIA TORO ROSSO HONDA"
 
