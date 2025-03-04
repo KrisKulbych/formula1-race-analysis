@@ -4,7 +4,7 @@ from datetime import timedelta
 
 @dataclass(order=True)
 class Driver:
-    id: str
+    identifier: str
     name: str
     car_model: str
 
