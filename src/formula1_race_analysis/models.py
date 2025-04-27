@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from datetime import timedelta
 
+from formula1_race_analysis.schemas import AbbreviationEntry
+
 
 @dataclass(order=True)
 class Driver:
@@ -8,9 +10,13 @@ class Driver:
     name: str
     car_model: str
 
+    @staticmethod
+    def from_pydantic_model(entry: AbbreviationEntry) -> "Driver":
+        return Driver(identifier=entry.identifier, name=entry.name, car_model=entry.car_model)
+
 
 @dataclass
-class RaceResults:
+class RaceResult:
     name: str
     car_model: str
     lap_time: timedelta
@@ -27,3 +33,15 @@ class RaceResults:
     @property
     def formatted_lap_time(self) -> str:
         return self.format_lap_time()
+
+
+@dataclass
+class TableSize:
+    name_column_width: int
+    car_column_width: int
+
+    @staticmethod
+    def calculate_column_width(report: list[RaceResult]) -> "TableSize":
+        name_width = max(len(driver.name) for driver in report)
+        car_width = max(len(driver.car_model) for driver in report)
+        return TableSize(name_column_width=name_width, car_column_width=car_width)

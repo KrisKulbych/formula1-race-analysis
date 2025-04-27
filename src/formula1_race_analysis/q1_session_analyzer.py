@@ -9,13 +9,13 @@ from formula1_race_analysis.exceptions import (
     InvalidRaceTimeError,
     MissedFileError,
 )
-from formula1_race_analysis.models import Driver, RaceResults
+from formula1_race_analysis.models import Driver, RaceResult
 from formula1_race_analysis.schemas import AbbreviationEntry, LogEntry
 
 IGNORE_ERRORS = False
 
 
-def build_q1_report(base_dir: Path, ignore_errors: bool | None = None) -> list[RaceResults]:
+def build_q1_report(base_dir: Path, ignore_errors: bool | None = None) -> list[RaceResult]:
     """
     Calculates the results of the first Formula One qualifying session based on driver data.
     Reads input files containing driver abbreviations, start timestamps, and end timestamps.
@@ -40,7 +40,7 @@ def build_q1_report(base_dir: Path, ignore_errors: bool | None = None) -> list[R
     lap_times = calculate_lap_time(start_timestamps, end_timestamps, ignore_errors=ignore_errors)
 
     return [
-        RaceResults(name=driver.name, car_model=driver.car_model, lap_time=lap_times[driver.identifier]["lap_time"])
+        RaceResult(name=driver.name, car_model=driver.car_model, lap_time=lap_times[driver.identifier]["lap_time"])
         for driver in drivers
         if driver.identifier in lap_times
     ]
@@ -67,7 +67,7 @@ def create_driver_list(filepath: Path, ignore_errors: bool | None) -> list[Drive
     for line in raw_data_from_abbreviation_file:
         try:
             entry = AbbreviationEntry.model_validate(line)
-            drivers.append(Driver(**entry.model_dump()))
+            drivers.append(Driver.from_pydantic_model(entry))
         except ValidationError:
             if ignore_errors:
                 continue

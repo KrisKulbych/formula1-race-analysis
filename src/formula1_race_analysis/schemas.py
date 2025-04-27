@@ -54,10 +54,11 @@ class LogEntry(BaseModel):
         Formats raw data from the log file into a dictionary of driver IDs and timestamps.
         Raises InvalidFormatDataError when data in file is not in the expected format.
         """
-        log_info = entry.strip("\n")
-        identifier = log_info[:ID_SLICER]
-        string_timestamp = log_info[ID_SLICER:]
-        if not identifier.isalpha() or not identifier or not string_timestamp:
-            raise InvalidFormatDataError(f"Error! Incorrect data format: '{entry}.'")
+        try:
+            log_info = entry.strip("\n")
+            identifier = log_info[:ID_SLICER]
+            string_timestamp = log_info[ID_SLICER:]
+        except ValueError as error:
+            raise InvalidFormatDataError(f"Error! Incorrect data format: '{entry}'.") from error
         timestamp = datetime.strptime(string_timestamp, "%Y-%m-%d_%H:%M:%S.%f")
         return {"identifier": identifier.upper(), "timestamp": timestamp}

@@ -5,7 +5,7 @@ from .exceptions import (
     InvalidRaceTimeError,
     MissedFileError,
 )
-from .models import Driver, RaceResults
+from .models import Driver, RaceResult, TableSize
 from .q1_session_analyzer import (
     build_q1_report,
     create_driver_list,
