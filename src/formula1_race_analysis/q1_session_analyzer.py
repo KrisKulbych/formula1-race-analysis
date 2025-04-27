@@ -1,21 +1,21 @@
-from datetime import datetime, timedelta
 from pathlib import Path
 
+from pydantic import ValidationError
+
 from config import FilePaths
-from formula1_race_analysis import (
+from formula1_race_analysis.custom_types import LapTimeDict, TimeStampDict
+from formula1_race_analysis.exceptions import (
     InvalidFormatDataError,
     InvalidRaceTimeError,
     MissedFileError,
-    convert_timestamp_to_seconds,
-    format_data_from_abbreviation_file,
-    format_data_from_log_file,
 )
-from formula1_race_analysis.driver_model import Driver
+from formula1_race_analysis.models import Driver, RaceResult
+from formula1_race_analysis.schemas import AbbreviationEntry, LogEntry
 
 IGNORE_ERRORS = False
 
 
-def build_q1_report(base_dir: Path, ignore_errors: bool | None = None) -> list[tuple[Driver, timedelta]]:
+def build_q1_report(base_dir: Path, ignore_errors: bool | None = None) -> list[RaceResult]:
     """
     Calculates the results of the first Formula One qualifying session based on driver data.
     Reads input files containing driver abbreviations, start timestamps, and end timestamps.
@@ -31,21 +31,25 @@ def build_q1_report(base_dir: Path, ignore_errors: bool | None = None) -> list[t
     start_log_file = base_dir / Path(FilePaths.START_LOG)
     end_log_file = base_dir / Path(FilePaths.END_LOG)
 
-    driver_database = parse_abbreviation_file(abbreviations_file, ignore_errors=ignore_errors)
-    if not driver_database:
+    drivers = create_driver_list(abbreviations_file, ignore_errors=ignore_errors)
+    if not drivers:
         raise InvalidFormatDataError("Error! Failed during creating driver database.")
 
     start_timestamps = parse_log_file(start_log_file, ignore_errors=ignore_errors)
     end_timestamps = parse_log_file(end_log_file, ignore_errors=ignore_errors)
     lap_times = calculate_lap_time(start_timestamps, end_timestamps, ignore_errors=ignore_errors)
 
-    return [(driver, lap_times[driver.id]) for driver in driver_database if driver.id in lap_times]
+    return [
+        RaceResult(name=driver.name, car_model=driver.car_model, lap_time=lap_times[driver.identifier]["lap_time"])
+        for driver in drivers
+        if driver.identifier in lap_times
+    ]
 
 
 def read_file_content(filepath: Path) -> list[str]:
     """
     Reads the contents of a file and returns it as a list of lines.
-    Raises MissedFileError if the file is not found.
+    Raises MissedFileError if the file is missing or cannot be opened.
     """
     try:
         with Path.open(filepath, encoding="utf-8") as text_file:
@@ -54,43 +58,58 @@ def read_file_content(filepath: Path) -> list[str]:
         raise MissedFileError(f"Error! The file path: {filepath} is not found or cannot be opened.") from error
 
 
-def parse_abbreviation_file(filepath: Path, ignore_errors: bool | None) -> list[Driver]:
+def create_driver_list(filepath: Path, ignore_errors: bool | None) -> list[Driver]:
     """
-    Parses a driver abbreviation file to create a driver database.
-    Raises InvalidFormatDataError when data in the file is not in the expected format.
+    Parses the driver abbreviation file and returns a list of Driver objects.
     """
+    drivers = []
     raw_data_from_abbreviation_file = read_file_content(filepath)
-    return format_data_from_abbreviation_file(raw_data_from_abbreviation_file, ignore_errors)
+    for line in raw_data_from_abbreviation_file:
+        try:
+            entry = AbbreviationEntry.model_validate(line)
+            drivers.append(Driver.from_pydantic_model(entry))
+        except ValidationError:
+            if ignore_errors:
+                continue
+    return drivers
 
 
-def parse_log_file(filepath: Path, ignore_errors: bool | None) -> dict[str, datetime]:
+def parse_log_file(filepath: Path, ignore_errors: bool | None) -> dict[str, TimeStampDict]:
     """
     Parses a log file to extract driver timestamps.
     """
+    timestamps = {}
     raw_data_from_log_file = read_file_content(filepath)
-    formatted = format_data_from_log_file(raw_data_from_log_file, ignore_errors)
-    return convert_timestamp_to_seconds(formatted, ignore_errors)
+    for line in raw_data_from_log_file:
+        try:
+            entry = LogEntry.model_validate(line)
+            timestamps[entry.identifier] = TimeStampDict(identifier=entry.identifier, timestamp=entry.timestamp)
+        except ValidationError:
+            if ignore_errors:
+                continue
+    return timestamps
 
 
 def calculate_lap_time(
-    start_timestamps: dict[str, datetime],
-    end_timestamps: dict[str, datetime],
+    start_timestamps: dict[str, TimeStampDict],
+    end_timestamps: dict[str, TimeStampDict],
     ignore_errors: bool | None,
-) -> dict[str, timedelta]:
+) -> dict[str, LapTimeDict]:
     """
-    Calculates the race duration for each driver based on start and end timestamps.
-    Raised InvalidRaceTimeError is raised when the driver' race start time exceeds than the race's end time.
+    Calculates lap times for each driver based on start and end timestamps.
+    Raised InvalidRaceTimeError is raised when the driver's start time exceeds than the end time.
     """
-    race_results = {}
-    for driver_id in start_timestamps.keys() and end_timestamps.keys():
-        dt_start_time = start_timestamps[driver_id]
-        dt_end_time = end_timestamps[driver_id]
+    lap_times = {}
+    for identifier in start_timestamps.keys() and end_timestamps.keys():
+        dt_start_time = start_timestamps[identifier]["timestamp"]
+        dt_end_time = end_timestamps[identifier]["timestamp"]
         if dt_start_time > dt_end_time:
             if ignore_errors:
                 continue
             raise InvalidRaceTimeError(
-                f"Race time error for driver: '{driver_id}'. Start time is greater than end time.",
+                f"Race time error for driver: '{identifier}'. Start time is greater than end time.",
             )
-        lap_time = end_timestamps[driver_id] - start_timestamps[driver_id]
-        race_results[driver_id] = lap_time
-    return race_results
+        lap_time = dt_end_time - dt_start_time
+        lap_times[identifier] = LapTimeDict(identifier=identifier, lap_time=lap_time)
+
+    return lap_times

@@ -20,3 +20,9 @@ class InvalidRaceTimeError(Formula1RaceAnalysisError):
     """
     Raised when the driver race start time is greater than the race end time.
     """
+
+
+class InvalidNameFormatError(Formula1RaceAnalysisError):
+    """
+    Raised data driver name has incorrect format.
+    """
