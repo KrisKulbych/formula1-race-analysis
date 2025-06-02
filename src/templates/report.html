@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}
+<h2>Formula1 Race Report</h2>
+{% endblock %}
+{% block header %}
+{% if order == 'desc' %}
+    <h4>sorting in descending order</h4>
+{% else %}
+    <h4>sorting in ascending order</h4>
+{% endif %}
+{% endblock %}
+{% block content %}
+{{ super() }}
+{% endblock %}
+{% block buttons %}
+<div class="button-group">
+    <div class="row-top">
+        <a href="{{ url_for('report', order='asc') }}">Sorting in ascending order</a>
+        <a href="{{ url_for('report', order='desc') }}">Sorting in descending order</a>
+    </div>
+    <div class="row-bottom">
+        <a href="{{ url_for('drivers') }}">Driver's list page</a>
+    </div>
+</div>
+{% endblock %}

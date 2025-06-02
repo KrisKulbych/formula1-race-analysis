@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}
+<h2>Formula1 Race Report</h2>
+{% endblock %}
+{% block header %}
+<h4>filtering report by ID</h4>
+{% endblock %}
+{% block content %}
+{{ super() }}
+{% endblock %}
+{% block buttons %}
+<div class="button-group">
+    <div class="row-top">
+            <a href="{{ url_for('report', order='desc') }}">Come back to report page</a>
+    </div>
+    <div class="row-bottom">
+        <a href="{{ url_for('drivers') }}">Driver's list page</a>
+    </div>
+</div>
+{% endblock %}

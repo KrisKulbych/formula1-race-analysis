@@ -32,6 +32,7 @@ def build_q1_report(base_dir: Path, ignore_errors: bool | None = None) -> list[R
     end_log_file = base_dir / Path(FilePaths.END_LOG)
 
     drivers = create_driver_list(abbreviations_file, ignore_errors=ignore_errors)
+
     if not drivers:
         raise InvalidFormatDataError("Error! Failed during creating driver database.")
 
@@ -40,7 +41,7 @@ def build_q1_report(base_dir: Path, ignore_errors: bool | None = None) -> list[R
     lap_times = calculate_lap_time(start_timestamps, end_timestamps, ignore_errors=ignore_errors)
 
     return [
-        RaceResult(name=driver.name, car_model=driver.car_model, lap_time=lap_times[driver.identifier]["lap_time"])
+        RaceResult(driver=driver, lap_time=lap_times[driver.identifier]["lap_time"])
         for driver in drivers
         if driver.identifier in lap_times
     ]

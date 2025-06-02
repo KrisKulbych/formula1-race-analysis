@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}
+<h2>Formula1 Race Report</h2>
+{% endblock %}
+{% block header %}
+<h4>list of drivers</h4>
+{% endblock %}
+{% block content %}
+<thead>
+    <tr>
+        <th>ID</th>
+        <th>Driver name</th>
+    </tr>
+</thead>
+{% for data in race_results %}
+<tbody>
+    <tr>
+        <td><a class="link" href="{{ url_for('driver_id', driver_id=data.driver.identifier) }}">{{ data.driver.identifier }}</a></td>
+        <td>{{ data.driver.name }}</td>
+    </tr>
+</tbody>
+{% endfor %}
+{% endblock %}
+{% block buttons %}
+<div class="button-group">
+    <div class="row-top">
+            <a href="{{ url_for('report', order='asc') }}">Come back to report page</a>
+    </div>
+</div>
+{% endblock %}

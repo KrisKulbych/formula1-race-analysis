@@ -1,6 +1,8 @@
 from .custom_types import LapTimeDict, TimeStampDict
 from .exceptions import (
+    DisplayReportError,
     InvalidFormatDataError,
+    InvalidIdentifierFormatError,
     InvalidNameFormatError,
     InvalidRaceTimeError,
     MissedFileError,

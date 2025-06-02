@@ -80,7 +80,7 @@ powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | ie
 2. Activate virtual environment
 ```console
 python -m venv .venv
-.venv/bin/activate
+.venv/Scripts/activate
 ```
 3. Lint and formate code:
 ```console

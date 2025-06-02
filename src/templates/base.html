@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link type="text/css" href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <title>Report</title>
+</head>
+<body>
+    <div class="content-wrapper">
+        {% block title %}
+        {% endblock %}
+        {% block header %}
+        {% endblock %}
+        <table class="content-table">
+            {% block content %}
+            <thead>
+            <tr>
+                <th>Number</th>
+                <th>Driver name</th>
+                <th>Car model</th>
+                <th>Lap time</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for data in race_results %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ data.driver.name }}</td>
+                <td>{{ data.driver.car_model }}</td>
+                <td>{{ data.format_lap_time() }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+            {% endblock %}
+        </table>
+        {% block buttons %}
+        {% endblock %}
+    </div>
+</body>
+</html>
