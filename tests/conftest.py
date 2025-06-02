@@ -2,8 +2,11 @@ from pathlib import Path
 
 import pytest
 from click.testing import CliRunner
+from flask import Flask
+from flask.testing import FlaskClient
 
 from config import FilePaths
+from f1_web_app import create_app
 
 
 @pytest.fixture(scope="session")
@@ -49,3 +52,19 @@ def prepare_invalid_data(tmp_path: Path) -> Path:
     tmp_start_log.write_text(start_log_content)
 
     return data_dir
+
+
+@pytest.fixture
+def test_app(prepare_correct_data: Path) -> Flask:
+    flask_app = create_app(base_dir=prepare_correct_data)
+    flask_app.config.update(
+        {
+            "TESTING": True,
+        }
+    )
+    return flask_app
+
+
+@pytest.fixture
+def client(test_app: Flask) -> FlaskClient:
+    return test_app.test_client()
