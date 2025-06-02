@@ -2,9 +2,14 @@ from datetime import datetime
 
 from pydantic import BaseModel, Field, field_validator, model_validator
 
-from formula1_race_analysis.exceptions import InvalidFormatDataError, InvalidNameFormatError
+from formula1_race_analysis.exceptions import (
+    InvalidFormatDataError,
+    InvalidIdentifierFormatError,
+    InvalidNameFormatError,
+)
 
 ID_SLICER = 3
+ID_LENGTH = 3
 
 
 class AbbreviationEntry(BaseModel):
@@ -26,6 +31,19 @@ class AbbreviationEntry(BaseModel):
             raise InvalidFormatDataError(f"Error! Incorrect data format: '{entry}'.") from error
         return {"identifier": identifier.upper(), "name": name, "car_model": car_model.upper()}
 
+    @field_validator("identifier")
+    @classmethod
+    def format_driver_identifier(cls, value: str) -> str:
+        """
+        Formats the driver's identifier.
+        """
+        formatted_identifier = value.strip().lower()
+        if len(formatted_identifier) != ID_LENGTH or not formatted_identifier.isalpha():
+            raise InvalidIdentifierFormatError(
+                f"Error! Incorrect identifier format: '{value}'. Expected 3-letter code."
+            )
+        return formatted_identifier.upper()
+
     @field_validator("name")
     @classmethod
     def format_driver_name(cls, value: str) -> str:
@@ -41,6 +59,16 @@ class AbbreviationEntry(BaseModel):
                 f"Error! Incorrect name format: '{value}'. Enter a name and lastname of driver."
             ) from error
         return f"{formatted_name} {formatted_lastname}"
+
+    @staticmethod
+    def validate_request(raw_request: str) -> tuple[str | None, str | None]:
+        try:
+            return AbbreviationEntry.format_driver_identifier(raw_request), None
+        except InvalidIdentifierFormatError:
+            try:
+                return None, AbbreviationEntry.format_driver_name(raw_request)
+            except InvalidNameFormatError:
+                return None, None
 
 
 class LogEntry(BaseModel):
