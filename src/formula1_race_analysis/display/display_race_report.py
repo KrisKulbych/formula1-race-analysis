@@ -1,6 +1,6 @@
 from enum import StrEnum
 
-from formula1_race_analysis import AbbreviationEntry
+from formula1_race_analysis import AbbreviationEntry, DisplayReportError
 from formula1_race_analysis.models import RaceResult, TableSize
 
 THE_NUMBER_OF_FASTEST_DRIVERS_PASSED_Q1 = 15
@@ -16,12 +16,15 @@ def display_race_report(report: list[RaceResult]) -> None:
     """
     Displays a formatted race report.
     """
+    if not report:
+        raise DisplayReportError("Error! Failed during displaying rase results.")
+
     table_size = TableSize.calculate_column_width(report)
 
     for position, data in enumerate(report, start=1):
         print(
-            f"{position:2d}. {data.name:<{table_size.name_column_width}} | "
-            f"{data.car_model:<{table_size.car_column_width}} | {data.format_lap_time()}"
+            f"{position:2d}. {data.driver.name:<{table_size.name_column_width}} | "
+            f"{data.driver.car_model:<{table_size.car_column_width}} | {data.format_lap_time()}"
         )
         if position == THE_NUMBER_OF_FASTEST_DRIVERS_PASSED_Q1:
             print("_" * 60)
@@ -38,9 +41,11 @@ def sort_report(report: list[RaceResult], sort_strategy: SortStrategy) -> list[R
     return sorted_report
 
 
-def filter_report(report: list[RaceResult], name: str) -> list[RaceResult]:
+def filter_report(report: list[RaceResult], raw_request: str) -> list[RaceResult] | None:
     """
     Filters the report by the given driver name.
     """
-    formatted_name = AbbreviationEntry.format_driver_name(name)
-    return [driver for driver in report if formatted_name == driver.name]
+    formatted_id, formatted_name = AbbreviationEntry.validate_request(raw_request)
+    if not formatted_id and not formatted_name:
+        return None
+    return [data for data in report if (data.driver.identifier == formatted_id) or (data.driver.name == formatted_name)]

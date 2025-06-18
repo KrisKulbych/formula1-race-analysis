@@ -3,7 +3,7 @@ from pathlib import Path
 import pytest
 from click.testing import CliRunner
 
-from config import FilePaths
+from formula1_race_analysis.config import FilePaths
 
 
 @pytest.fixture(scope="session")
