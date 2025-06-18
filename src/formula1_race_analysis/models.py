@@ -17,8 +17,7 @@ class Driver:
 
 @dataclass
 class RaceResult:
-    name: str
-    car_model: str
+    driver: Driver
     lap_time: timedelta
 
     def format_lap_time(self) -> str:
@@ -42,6 +41,6 @@ class TableSize:
 
     @staticmethod
     def calculate_column_width(report: list[RaceResult]) -> "TableSize":
-        name_width = max(len(driver.name) for driver in report)
-        car_width = max(len(driver.car_model) for driver in report)
+        name_width = max(len(data.driver.name) for data in report)
+        car_width = max(len(data.driver.car_model) for data in report)
         return TableSize(name_column_width=name_width, car_column_width=car_width)
