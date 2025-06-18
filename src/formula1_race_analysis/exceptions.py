@@ -26,3 +26,15 @@ class InvalidNameFormatError(Formula1RaceAnalysisError):
     """
     Raised data driver name has incorrect format.
     """
+
+
+class InvalidIdentifierFormatError(Formula1RaceAnalysisError):
+    """
+    Raised data driver identifier has incorrect format.
+    """
+
+
+class DisplayReportError(Formula1RaceAnalysisError):
+    """
+    Raised when failed during displaying rase results.
+    """
