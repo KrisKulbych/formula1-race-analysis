@@ -1,6 +1,6 @@
 import click
 
-from display import generate_report
+from formula1_race_analysis.display import generate_report
 
 
 @click.group()

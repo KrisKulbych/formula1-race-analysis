@@ -2,8 +2,13 @@ from pathlib import Path
 
 import click
 
-from config import logger
-from display.display_race_report import SortStrategy, display_race_report, filter_report, sort_report
+from formula1_race_analysis.config import logger
+from formula1_race_analysis.display.display_race_report import (
+    SortStrategy,
+    display_race_report,
+    filter_report,
+    sort_report,
+)
 from formula1_race_analysis.exceptions import Formula1RaceAnalysisError
 from formula1_race_analysis.q1_session_analyzer import build_q1_report
 

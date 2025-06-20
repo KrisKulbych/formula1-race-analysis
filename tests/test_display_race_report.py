@@ -2,8 +2,8 @@ from pathlib import Path
 
 import pytest
 
-from display import SortStrategy, display_race_report, filter_report, sort_report
 from formula1_race_analysis import build_q1_report
+from formula1_race_analysis.display import SortStrategy, display_race_report, filter_report, sort_report
 
 
 class TestDisplayRaceReport:

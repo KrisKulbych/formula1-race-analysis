@@ -4,7 +4,7 @@ from pathlib import Path
 from _pytest.logging import LogCaptureFixture
 from click.testing import CliRunner
 
-from display import generate_report
+from formula1_race_analysis.display import generate_report
 
 
 class TestQ1GenerateReport:
